@@ -5,6 +5,7 @@ import android.content.Context;
 import java.util.Map;
 
 import retrofit2.Call;
+import retrofit2.http.HeaderMap;
 
 /**
  * Created by lyl on 2016/10/30.
@@ -16,27 +17,31 @@ public class RetrofitUtils {
         HttpHelper.setBaseUrl(httpBaseUrl);
     }
 
-    /**
-     *
-     * @param apiUrl 请求地址
-     * @param paramMap 请求参数（可以传null）
-     * @param httpResponseListener 回调监听
-     * @param <T> Bean
-     * @return Call可以取消网络请求
-     */
-    public static <T> Call getAsync(String apiUrl, Map<String, Object> paramMap, final HttpResponseListener<T> httpResponseListener){
-        return HttpHelper.getAsync(apiUrl,paramMap,httpResponseListener);
+    public static <T> Call getAsync(String apiUrl, final HttpResponseListener<T> httpResponseListener) {
+        return HttpHelper.getAsync(apiUrl, null, null, httpResponseListener);
     }
 
-    /**
-     *
-     * @param apiUrl 请求地址
-     * @param paramMap 请求参数（可以传null）
-     * @param httpResponseListener 回调监听
-     * @param <T> Bean
-     * @return Call
-     */
+    public static <T> Call postAsync(String apiUrl, HttpResponseListener<T> httpResponseListener) {
+        return HttpHelper.postAsync(apiUrl, null, null, httpResponseListener);
+    }
+
+    public static <T> Call getAsync(String apiUrl, Map<String, Object> paramMap, final HttpResponseListener<T> httpResponseListener) {
+        return HttpHelper.getAsync(apiUrl, null, paramMap, httpResponseListener);
+    }
+
+
+
     public static <T> Call postAsync(String apiUrl, Map<String, Object> paramMap, HttpResponseListener<T> httpResponseListener) {
-        return HttpHelper.postAsync(apiUrl,paramMap,httpResponseListener);
+        return HttpHelper.postAsync(apiUrl, null, paramMap, httpResponseListener);
+    }
+
+
+    public static <T> Call getAsync(String apiUrl, @HeaderMap Map<String, String> headerMap, Map<String, Object> paramMap, final HttpResponseListener<T> httpResponseListener) {
+        return HttpHelper.getAsync(apiUrl, headerMap, paramMap, httpResponseListener);
+    }
+
+
+    public static <T> Call postAsync(String apiUrl, @HeaderMap Map<String, String> headerMap, Map<String, Object> paramMap, HttpResponseListener<T> httpResponseListener) {
+        return HttpHelper.postAsync(apiUrl, headerMap, paramMap, httpResponseListener);
     }
 }

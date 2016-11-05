@@ -1,12 +1,8 @@
 package com.itheima.retrofitutils;
 
-import android.text.TextUtils;
 import android.util.Log;
 
-/**
- * 日志工具类
- * Created by forever on 2016/4/11.
- */
+
 public class L {
 
     public static final boolean isDebug = true;
