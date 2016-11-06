@@ -23,9 +23,11 @@ RetrofitUtils.init(this, baseUrl);
 baseUrl格式："http://xxxxxx/xxxxx/"
 ```
 
-######get String类型异步请求
+######get/post String类型异步请求
 ```
-Call call = RetrofitUtils.getAsync(apiUrl, paramMap, new HttpResponseListener<String>() {
+RetrofitUtils.getAsync.......同下.....
+
+Call call = RetrofitUtils.postAsync(apiUrl, paramMap, new HttpResponseListener<String>() {
     @Override
     public void onResponse(String s) {
         ........
@@ -46,19 +48,12 @@ Call call = RetrofitUtils.getAsync(apiUrl, paramMap, new HttpResponseListener<St
 @param <T> Bean
 @return Call可以取消网络请求
 ```
-######post String类型异步请求
-```
-Call call = RetrofitUtils.postAsync(apiUrl, paramMap,new HttpResponseListener<String>() {
-    @Override
-    public void onResponse(String s) {
-        ........
-    }
-});
-```
 
-######get Bean类型异步请求,内部使用Gson解析json数据
+######get/post Bean类型异步请求,内部使用Gson解析json数据
 ```
-Call call = RetrofitUtils.getAsync(apiUrl, paramMap, new HttpResponseListener<Bean>() {
+RetrofitUtils.getAsync.......同下.....
+
+Call call = RetrofitUtils.postAsync(apiUrl, paramMap, new HttpResponseListener<Bean>() {
     @Override
     public void onResponse(Bean bean) {
         ........
@@ -66,9 +61,11 @@ Call call = RetrofitUtils.getAsync(apiUrl, paramMap, new HttpResponseListener<Be
 });
 ```
 
-######post Bean类型异步请求,内部使用Gson解析json数据
+######get/post异步请求添请求加头
 ```
-Call call = RetrofitUtils.postAsync(apiUrl, paramMap, new HttpResponseListener<Bean>() {
+RetrofitUtils.getAsync.......同下.....
+
+Call call = RetrofitUtils.postAsync(apiUrl,headerMap, paramMap, new HttpResponseListener<Bean>() {
     @Override
     public void onResponse(Bean bean) {
         ........

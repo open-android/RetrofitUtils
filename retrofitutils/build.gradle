@@ -1,5 +1,5 @@
 apply plugin: 'com.android.library'
-apply plugin: 'com.novoda.bintray-release'//添加
+//apply plugin: 'com.novoda.bintray-release'//添加
 android {
     compileSdkVersion 24
     buildToolsVersion "23.0.3"
@@ -18,9 +18,9 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
         }
     }
-    lintOptions {
+/*    lintOptions {
         abortOnError false
-    }
+    }*/
 
 
 }
@@ -29,16 +29,22 @@ dependencies {
     compile 'com.squareup.retrofit2:retrofit:2.1.0'
     compile 'com.squareup.retrofit2:converter-gson:2.1.0'
 
-    compile 'com.hyman:basetools:1.0.0'
+/*    compile 'com.hyman:basetools:1.0.0'*/
 }
 
+ext {
+    PUBLISH_GROUP_ID = 'com.itheima'
+    PUBLISH_ARTIFACT_ID = 'retrofitutils'
+    PUBLISH_VERSION = '1.0'
+}
+apply from: 'https://raw.githubusercontent.com/blundell/release-android-library/master/android-release-aar.gradle'
 //添加
-publish {
+/*publish {
     userOrg = 'itcastsh'//bintray.com用户名
     groupId = 'com.itheima'//jcenter上的路径
     artifactId = 'retrofitutils'//项目名称
     publishVersion = '1.1.0'//版本号
     desc = 'retrofit utils'//描述，不重要
     website = 'https://github.com/itcastsh/retrofitUtils'//网站，不重要；尽量模拟github上的地址，例如我这样的；当然你有地址最好了
-}
+}*/
 //apply from: "https://raw.githubusercontent.com/xiaopansky/android-library-publish-to-jcenter/master/bintrayUpload.gradle"
