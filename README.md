@@ -6,6 +6,7 @@ Retrofit封装框架，内部使用gson解析json数据
 ===
 在build.gradle添加依赖
 ```
+compile 'com.github.itcastsh:retrofitUtils:0.1.0'
 compile 'com.squareup.retrofit2:retrofit:2.1.0'
 compile 'com.squareup.retrofit2:converter-gson:2.1.0'
 ```
