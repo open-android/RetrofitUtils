@@ -4,6 +4,18 @@ Retrofit封装框架，内部使用gson解析json数据
 
 开始
 ===
+在project的build.gradle添加如下代码(如下图)
+```
+allprojects {
+    repositories {
+        ...
+        jcenter()
+        maven { url "https://jitpack.io" }
+    }
+}
+```
+![image](jitpack.png)
+
 在build.gradle添加依赖
 ```
 compile 'com.github.itcastsh:retrofitUtils:0.1.0'
