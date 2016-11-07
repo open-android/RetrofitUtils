@@ -1,6 +1,5 @@
 package com.itheima.retrofitutils;
 
-import com.itheima.retrofitutils.listener.ProgressListener;
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;

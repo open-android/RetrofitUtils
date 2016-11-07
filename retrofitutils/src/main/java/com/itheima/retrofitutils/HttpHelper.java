@@ -3,7 +3,6 @@ package com.itheima.retrofitutils;
 import android.text.TextUtils;
 
 import com.google.gson.Gson;
-import com.itheima.retrofitutils.listener.ProgressListener;
 
 import java.io.File;
 import java.lang.ref.WeakReference;
