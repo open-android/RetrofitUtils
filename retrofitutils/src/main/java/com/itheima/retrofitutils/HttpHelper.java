@@ -1,20 +1,18 @@
 package com.itheima.retrofitutils;
 
-import android.content.Context;
-import android.net.Uri;
 import android.text.TextUtils;
 
 import com.google.gson.Gson;
+import com.itheima.retrofitutils.listener.ProgressListener;
 
 import java.io.File;
 import java.lang.ref.WeakReference;
-import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import okhttp3.Interceptor;
-import okhttp3.MultipartBody;
+import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
@@ -30,6 +28,7 @@ import retrofit2.http.HeaderMap;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
+import retrofit2.http.PartMap;
 import retrofit2.http.QueryMap;
 import retrofit2.http.Url;
 
@@ -79,7 +78,7 @@ public final class HttpHelper {
     }
 
 
-    public static <T> Call getAsync(String apiUrl, @HeaderMap Map<String, String> headers, Map<String, Object> paramMap, final HttpResponseListener<T> httpResponseListener) {
+    public static <T> Call getAsync(String apiUrl, @HeaderMap Map<String, Object> headers, Map<String, Object> paramMap, final HttpResponseListener<T> httpResponseListener) {
         if (paramMap == null) {
             paramMap = new HashMap<>();
         }
@@ -92,7 +91,7 @@ public final class HttpHelper {
         return call;
     }
 
-    public static <T> Call postAsync(String apiUrl, @HeaderMap Map<String, String> headers, Map<String, Object> paramMap, HttpResponseListener<T> httpResponseListener) {
+    public static <T> Call postAsync(String apiUrl, @HeaderMap Map<String, Object> headers, Map<String, Object> paramMap, HttpResponseListener<T> httpResponseListener) {
         if (paramMap == null) {
             paramMap = new HashMap<>();
         }
@@ -101,12 +100,30 @@ public final class HttpHelper {
         }
         HttpService httpService = getInstance().mRetrofit.create(HttpService.class);
         Call<ResponseBody> call = httpService.post(apiUrl, headers, paramMap);
+
         parseNetData(call, httpResponseListener);
         return call;
     }
 
+    public static <T> Call upload(Request request, HttpResponseListener<T> httpResponseListener) {
+        Map<String, RequestBody> requestBodyMap = new HashMap<>();
+        RequestBody requestBody = okhttp3.RequestBody.create(MediaType.parse("multipart/form-data"), request.getUploadFiles().get(0));
+        requestBodyMap.put("file[]\"; filename=\"" + request.getUploadFiles().get(0).getName(), requestBody);
 
+        Retrofit retrofit = new Retrofit.Builder()
+                .addConverterFactory(new ChunkingConverterFactory(requestBody, httpResponseListener))
+                .addConverterFactory(GsonConverterFactory.create())
+                .baseUrl(request.getApiUlr().substring(0, request.getApiUlr().lastIndexOf(File.separator) + 1))
+                .build();
+        HttpService service = retrofit.create(HttpService.class);
 
+        Call<ResponseBody> model = service.upload(
+                request.getApiUlr().substring(request.getApiUlr().lastIndexOf(File.separator) + 1, request.getApiUlr().length() + 1)
+                , "uploadDes"
+                , requestBodyMap);
+        parseNetData(model, httpResponseListener);
+        return model;
+}
 
 
     private static <T> void parseNetData(Call<ResponseBody> call, final HttpResponseListener<T> httpResponseListener) {
@@ -136,16 +153,16 @@ public final class HttpHelper {
     }
 
 
-    public static interface HttpService<T> {
-        @GET
-        public Call<ResponseBody> get(@Url String url, @HeaderMap Map<String, String> headers, @QueryMap Map<String, Object> param);
+public static interface HttpService<T> {
+    @GET
+    public Call<ResponseBody> get(@Url String url, @HeaderMap Map<String, String> headers, @QueryMap Map<String, Object> param);
 
-        @FormUrlEncoded
-        @POST
-        public Call<ResponseBody> post(@Url String url, @HeaderMap Map<String, String> headers, @FieldMap Map<String, Object> param);
+    @FormUrlEncoded
+    @POST
+    public Call<ResponseBody> post(@Url String url, @HeaderMap Map<String, String> headers, @FieldMap Map<String, Object> param);
 
-        @Multipart
-        @POST("upload")
-        Call<ResponseBody> upload(@Part("description") RequestBody description, @Part MultipartBody.Part file);
-    }
+    @Multipart
+    @POST
+    Call<String> upload(@Url String url, @Part("filedes") String des, @PartMap Map<String, RequestBody> params);
+}
 }

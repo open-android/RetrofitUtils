@@ -18,18 +18,21 @@ compile 'com.squareup.retrofit2:converter-gson:2.1.0'
 ######初始化
 retrofitUtils初始化需要二个参数Context、baseUrl，最好在Application的onCreate()中初始化，记得在manifest.xml中注册Application。
 ```
-RetrofitUtils.init(this, baseUrl);
-
-baseUrl格式："http://xxxxxx/xxxxx/"
+ItheimaHttp.init(this, baseUrl);//baseUrl格式："http://xxxxxx/xxxxx/"
 ```
 
-######get/post String类型异步请求
+######get/Post Bean类型异步请求
 ```
-RetrofitUtils.getAsync.......同下.....
-
-Call call = RetrofitUtils.postAsync(apiUrl, paramMap, new HttpResponseListener<String>() {
+//Request.newPostRequest(apiUrl)
+Request request = Request.newGetRequest(apiUrl);
+//添加请求头
+request.putHeader(key,value);
+//添加请求参数
+request.putParams(key,value);
+//发送异步网络请求,内部使用Gson解析json数据
+Call call = ItheimaHttp.send(request, new HttpResponseListener<Bean>() {
     @Override
-    public void onResponse(String s) {
+    public void onResponse(Bean bean) {
         ........
     }
      /**
@@ -43,17 +46,28 @@ Call call = RetrofitUtils.postAsync(apiUrl, paramMap, new HttpResponseListener<S
     }
 });
 @param apiUrl 请求地址("xxx/xxxxx")
-@param paramMap 请求参数（可以传null）
 @param httpResponseListener 回调监听
 @param <T> Bean
 @return Call可以取消网络请求
 ```
 
+######get/post String类型异步请求
+```
+Call call = ItheimaHttp.getAsync(apiUrl, httpResponseListener<String>);
+
+Call call = ItheimaHttp.postAsync(apiUrl, new HttpResponseListener<String>() {
+    @Override
+    public void onResponse(Bean bean) {
+        ........
+    }
+});
+```
+
 ######get/post Bean类型异步请求,内部使用Gson解析json数据
 ```
-RetrofitUtils.getAsync.......同下.....
+Call call = ItheimaHttp.getAsync(apiUrl, httpResponseListener<Bean>);
 
-Call call = RetrofitUtils.postAsync(apiUrl, paramMap, new HttpResponseListener<Bean>() {
+Call call = ItheimaHttp.postAsync(apiUrl, new HttpResponseListener<Bean>() {
     @Override
     public void onResponse(Bean bean) {
         ........
@@ -61,16 +75,11 @@ Call call = RetrofitUtils.postAsync(apiUrl, paramMap, new HttpResponseListener<B
 });
 ```
 
-######get/post异步请求添请求加头
+######文件上传
 ```
-RetrofitUtils.getAsync.......同下.....
-
-Call call = RetrofitUtils.postAsync(apiUrl,headerMap, paramMap, new HttpResponseListener<Bean>() {
-    @Override
-    public void onResponse(Bean bean) {
-        ........
-    }
-});
+Request request = Request.newUploadRequest("http://xxx/xxx");
+request.putUploadFile(file);
+ItheimaHttp.upload(request,httpResponseListener)
 ```
 
 ######取消网络请求
