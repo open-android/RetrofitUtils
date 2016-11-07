@@ -14,6 +14,8 @@ compile 'com.squareup.retrofit2:converter-gson:2.1.0'
 ######需要的权限
 ```
 <uses-permission android:name="android.permission.INTERNET" />
+<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 ```
 
 ######初始化
