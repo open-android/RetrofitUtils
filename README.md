@@ -18,7 +18,7 @@ allprojects {
 
 在build.gradle添加依赖
 ```
-compile 'com.github.itcastsh:retrofitUtils:0.1.0'
+compile 'com.github.itcastsh:retrofitUtils:0.1.2'
 compile 'com.squareup.retrofit2:retrofit:2.1.0'
 compile 'com.squareup.retrofit2:converter-gson:2.1.0'
 ```
