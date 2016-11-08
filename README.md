@@ -72,7 +72,7 @@ Call call = ItheimaHttp.getAsync(apiUrl, httpResponseListener<String>);
 
 Call call = ItheimaHttp.postAsync(apiUrl, new HttpResponseListener<String>() {
     @Override
-    public void onResponse(String bean) {
+    public void onResponse(String s) {
         ........
     }
 });
