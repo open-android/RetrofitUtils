@@ -119,3 +119,8 @@ ItheimaHttp.upload(request, new HttpResponseListener<String>() {
 ```
 call.cancel();
 ```
+
+####是否需要查看日志
+```
+ItheimaHttp.isDebug(true);
+```

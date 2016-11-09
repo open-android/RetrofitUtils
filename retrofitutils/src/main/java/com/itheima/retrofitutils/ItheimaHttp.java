@@ -81,4 +81,13 @@ public class ItheimaHttp {
     public static Request newGetRequest(String apiUlr) {
         return new Request(apiUlr, RequestMethod.GET);
     }
+
+    /**
+     * 是否显示日志，默认不现实 true:显示
+     *
+     * @param isDebug
+     */
+    public static void isDebug(boolean isDebug) {
+        L.isDebug = isDebug;
+    }
 }

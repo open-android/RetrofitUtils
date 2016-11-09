@@ -5,15 +5,14 @@ import android.util.Log;
 
 public class L {
 
-    public static final boolean isDebug = true;
-    private static final String TAG = "MY_TAG";
-
-    public static final String HTTP_TAG = "HTTP_TAG";
+    public static boolean isDebug = false;
+    private static final String TAG = "TAG_RETROFIT";
 
     public static void i(String tag, String message) {
         if (isDebug) {
             Log.i(tag, message);
         }
+
     }
 
     public static void i(String message) {

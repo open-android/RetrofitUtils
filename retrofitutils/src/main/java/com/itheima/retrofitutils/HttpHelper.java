@@ -133,6 +133,9 @@ public final class HttpHelper {
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
                     String json = response.body().string();
+                    if (L.isDebug) {
+                        L.i("response data:" + json);
+                    }
                     if (!String.class.equals(httpResponseListener.getType())) {
                         Gson gson = new Gson();
                         T t = gson.fromJson(json, httpResponseListener.getType());
@@ -141,7 +144,9 @@ public final class HttpHelper {
                         httpResponseListener.onResponse((T) json);
                     }
                 } catch (Exception e) {
-                    L.e("HttpLelper onResponse:", e);
+                    if (L.isDebug) {
+                        L.e("Http Exception:", e);
+                    }
                     httpResponseListener.onFailure(call, e);
                 }
             }
