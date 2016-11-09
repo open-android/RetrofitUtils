@@ -21,20 +21,20 @@ allprojects {
 compile 'com.github.itcastsh:retrofitUtils:0.1.3'
 ```
 
-######需要的权限
+####需要的权限
 ```
 <uses-permission android:name="android.permission.INTERNET" />
 <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 ```
 
-######初始化
+####初始化
 retrofitUtils初始化需要二个参数Context、baseUrl，最好在Application的onCreate()中初始化，记得在manifest.xml中注册Application。
 ```
 ItheimaHttp.init(this, baseUrl);//baseUrl格式："http://xxxxxx/xxxxx/"
 ```
 
-######get/Post Bean类型异步请求（内部使用Gson解析json数据）
+####get/Post Bean类型异步请求（内部使用Gson解析json数据）
 ```
 //ItheimaHttp.newPostRequest(apiUrl)
 Request request = ItheimaHttp.newGetRequest(apiUrl);//apiUrl格式："xxx/xxxxx"
@@ -57,7 +57,7 @@ Call call = ItheimaHttp.send(request, new HttpResponseListener<Bean>() {
 @param <T> Bean
 @return Call可以取消网络请求
 ```
-######添加请求参数
+####添加请求参数
 ```
 request.putParams(key,value)
 .putParams(key,value)
@@ -65,13 +65,13 @@ request.putParams(key,value)
 
 request.putParamsMap(map);
 ```
-######添加请求头
+####添加请求头
 ```
 //添加请求头
 request.putHeader(key,value)
 .putHeader(key,value);
 ```
-######get/post String类型异步请求
+####get/post String类型异步请求
 ```
 Call call = ItheimaHttp.getAsync(apiUrl, httpResponseListener<String>);
 
@@ -83,7 +83,7 @@ Call call = ItheimaHttp.postAsync(apiUrl, new HttpResponseListener<String>() {
 });
 ```
 
-######get/post Bean类型异步请求,内部使用Gson解析json数据
+####get/post Bean类型异步请求,内部使用Gson解析json数据
 ```
 Call call = ItheimaHttp.getAsync(apiUrl, httpResponseListener<Bean>);
 
@@ -95,7 +95,7 @@ Call call = ItheimaHttp.postAsync(apiUrl, new HttpResponseListener<Bean>() {
 });
 ```
 
-######文件上传
+####文件上传
 ```
 Request request = ItheimaHttp.newUploadRequest("http://xxx/xxx/xxx/", RequestMethod.GET);//地址最后一定记得加斜杠
 request.putUploadFile(uploadFile)
@@ -115,7 +115,7 @@ ItheimaHttp.upload(request, new HttpResponseListener<String>() {
 });
 ```
 
-######取消网络请求
+####取消网络请求
 ```
 call.cancel();
 ```
