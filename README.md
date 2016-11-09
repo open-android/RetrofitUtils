@@ -57,20 +57,20 @@ Call call = ItheimaHttp.send(request, new HttpResponseListener<Bean>() {
 @param <T> Bean
 @return Call可以取消网络请求
 ```
-######添加请求头 和 请求参数
+######添加请求参数
 ```
-//添加请求头
-request.putHeader(key,value)
-.putHeader(key,value);
-
-//添加请求参数
 request.putParams(key,value)
 .putParams(key,value)
 .putParams(key,value);
 
 request.putParamsMap(map);
 ```
-
+######添加请求头
+```
+//添加请求头
+request.putHeader(key,value)
+.putHeader(key,value);
+```
 ######get/post String类型异步请求
 ```
 Call call = ItheimaHttp.getAsync(apiUrl, httpResponseListener<String>);
