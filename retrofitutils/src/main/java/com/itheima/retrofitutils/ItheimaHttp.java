@@ -47,4 +47,38 @@ public class ItheimaHttp {
     public static <T> Call upload(Request request, HttpResponseListener<T> httpResponseListener) {
         return HttpHelper.upload(request, httpResponseListener);
     }
+
+    /**
+     * @param apiUlr 格式：xxxx/xxxxx
+     * @return
+     */
+    public static Request newRequest(String apiUlr, RequestMethod method) {
+        return new Request(apiUlr, method);
+    }
+
+    /**
+     * @param apiUlr 格式：xxxx/xxxxx
+     * @return
+     */
+    public static Request newPostRequest(String apiUlr) {
+        return new Request(apiUlr, RequestMethod.POST);
+    }
+
+    /**
+     * @param uploadFileUrl 格式：http://xxxx/xxxxx
+     * @return
+     */
+    public static Request newUploadRequest(String uploadFileUrl, RequestMethod method) {
+        return new Request(uploadFileUrl, method);
+    }
+
+    /**
+     * 默认是GET方式
+     *
+     * @param apiUlr 格式：xxxx/xxxxx
+     * @return
+     */
+    public static Request newGetRequest(String apiUlr) {
+        return new Request(apiUlr, RequestMethod.GET);
+    }
 }

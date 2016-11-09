@@ -4,14 +4,13 @@ import android.text.TextUtils;
 
 import com.google.gson.Gson;
 
-import java.io.File;
+import java.io.FileNotFoundException;
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import okhttp3.Interceptor;
-import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
@@ -105,24 +104,27 @@ public final class HttpHelper {
     }
 
     public static <T> Call upload(Request request, HttpResponseListener<T> httpResponseListener) {
+        if (request.getUploadFiles() == null || !request.getUploadFiles().get(0).exists()) {
+            new FileNotFoundException("file does not exist(文件不存在)").printStackTrace();
+        }
         Map<String, RequestBody> requestBodyMap = new HashMap<>();
-        RequestBody requestBody = okhttp3.RequestBody.create(MediaType.parse("multipart/form-data"), request.getUploadFiles().get(0));
+        RequestBody requestBody = RequestBody.create(request.getMediaType(), request.getUploadFiles().get(0));
         requestBodyMap.put("file[]\"; filename=\"" + request.getUploadFiles().get(0).getName(), requestBody);
 
         Retrofit retrofit = new Retrofit.Builder()
                 .addConverterFactory(new ChunkingConverterFactory(requestBody, httpResponseListener))
                 .addConverterFactory(GsonConverterFactory.create())
-                .baseUrl(request.getApiUlr().substring(0, request.getApiUlr().lastIndexOf(File.separator) + 1))
+                .baseUrl(request.getApiUlr())
                 .build();
         HttpService service = retrofit.create(HttpService.class);
 
         Call<ResponseBody> model = service.upload(
-                request.getApiUlr().substring(request.getApiUlr().lastIndexOf(File.separator) + 1, request.getApiUlr().length() + 1)
+                ""
                 , "uploadDes"
                 , requestBodyMap);
         parseNetData(model, httpResponseListener);
         return model;
-}
+    }
 
 
     private static <T> void parseNetData(Call<ResponseBody> call, final HttpResponseListener<T> httpResponseListener) {
@@ -152,16 +154,16 @@ public final class HttpHelper {
     }
 
 
-public static interface HttpService<T> {
-    @GET
-    public Call<ResponseBody> get(@Url String url, @HeaderMap Map<String, String> headers, @QueryMap Map<String, Object> param);
+    public static interface HttpService<T> {
+        @GET
+        public Call<ResponseBody> get(@Url String url, @HeaderMap Map<String, String> headers, @QueryMap Map<String, Object> param);
 
-    @FormUrlEncoded
-    @POST
-    public Call<ResponseBody> post(@Url String url, @HeaderMap Map<String, String> headers, @FieldMap Map<String, Object> param);
+        @FormUrlEncoded
+        @POST
+        public Call<ResponseBody> post(@Url String url, @HeaderMap Map<String, String> headers, @FieldMap Map<String, Object> param);
 
-    @Multipart
-    @POST
-    Call<String> upload(@Url String url, @Part("filedes") String des, @PartMap Map<String, RequestBody> params);
-}
+        @Multipart
+        @POST
+        Call<String> upload(@Url String url, @Part("filedes") String des, @PartMap Map<String, RequestBody> params);
+    }
 }

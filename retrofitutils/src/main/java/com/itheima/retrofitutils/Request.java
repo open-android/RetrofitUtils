@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import okhttp3.MediaType;
+
 /**
  * Created by lyl on 2016/11/6.
  */
@@ -17,52 +19,20 @@ public class Request {
     private String mApiUlr;
     private RequestMethod mRequestMethod;
 
-    private Request(String apiUlr, RequestMethod method) {
+    private MediaType mMediaType = MediaType.parse("application/otcet-stream");
+
+    public Request(String apiUlr, RequestMethod method) {
         this.mApiUlr = apiUlr;
         this.mRequestMethod = method;
     }
 
-    /**
-     * @param apiUlr 格式：xxxx/xxxxx
-     * @return
-     */
-    public static Request newRequest(String apiUlr, RequestMethod method) {
-        return new Request(apiUlr, method);
-    }
 
-    /**
-     * @param apiUlr 格式：xxxx/xxxxx
-     * @return
-     */
-    public static Request newPostRequest(String apiUlr) {
-        return new Request(apiUlr, RequestMethod.POST);
-    }
-
-    /**
-     * @param uploadFleUrl 格式：http://xxxx/xxxxx
-     * @return
-     */
-    public static Request newUploadRequest(String uploadFleUrl) {
-        return new Request(uploadFleUrl, RequestMethod.GET);
-    }
-
-    /**
-     * 默认是GET方式
-     *
-     * @param apiUlr 格式：xxxx/xxxxx
-     * @return
-     */
-    public static Request newGetRequest(String apiUlr) {
-        return new Request(apiUlr, RequestMethod.GET);
-    }
-
-
-    public Map<String, Object> putHeader(String key, Object value) {
+    public Request putHeader(String key, Object value) {
         if (mHeaderMap == null) {
             mHeaderMap = new HashMap<>();
         }
         mHeaderMap.put(key, value);
-        return mHeaderMap;
+        return this;
     }
 
     public void putHeaderMap(Map<String, Object> headerMap) {
@@ -73,12 +43,12 @@ public class Request {
         }
     }
 
-    public Map<String, Object> putParams(String key, Object value) {
+    public Request putParams(String key, Object value) {
         if (mParamsMap == null) {
             mParamsMap = new HashMap<>();
         }
         mParamsMap.put(key, value);
-        return mParamsMap;
+        return this;
     }
 
     public void putParamsMap(Map<String, Object> paramMap) {
@@ -89,12 +59,21 @@ public class Request {
         }
     }
 
-    public List<File> putUploadFile(File uploadFile) {
+    public Request putMediaType(MediaType mediaType) {
+        mMediaType = mediaType;
+        return this;
+    }
+
+    public MediaType getMediaType() {
+        return mMediaType;
+    }
+
+    public Request putUploadFile(File uploadFile) {
         if (mUploadFiles == null) {
             mUploadFiles = new ArrayList<>(3);
         }
         mUploadFiles.add(uploadFile);
-        return mUploadFiles;
+        return this;
     }
 
     public List<File> getUploadFiles() {
