@@ -18,7 +18,7 @@ allprojects {
 
 在build.gradle添加依赖
 ```
-compile 'com.github.itcastsh:retrofitUtils:0.1.5'
+compile 'com.github.itcastsh:retrofitUtils:0.1.4'
 ```
 
 ####需要的权限
