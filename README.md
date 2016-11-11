@@ -99,7 +99,7 @@ Call call = ItheimaHttp.postAsync(apiUrl, new HttpResponseListener<Bean>() {
 ```
 Request request = ItheimaHttp.newUploadRequest("http://xxx/xxx/xxx/", RequestMethod.GET);//地址最后一定记得加斜杠
 request.putUploadFile(uploadFile)
-        .putMediaType(MediaType.parse("image/jpg"));
+        .putMediaType(MediaType.parse("multipart/form-data"));
 ItheimaHttp.upload(request, new UploadListener() {
     @Override
     public void onResponse(Call call, Response response) {
@@ -128,5 +128,5 @@ call.cancel();
 ItheimaHttp.isDebug(true);
 ```
 
-####开源群
+####交流群
 415094387
