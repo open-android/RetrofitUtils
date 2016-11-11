@@ -3,15 +3,15 @@ package com.itheima.retrofitutils;
 import android.text.TextUtils;
 
 import com.google.gson.Gson;
+import com.itheima.retrofitutils.listener.HttpResponseListener;
+import com.itheima.retrofitutils.listener.UploadListener;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import okhttp3.Interceptor;
-import okhttp3.OkHttpClient;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -50,18 +50,10 @@ public final class HttpHelper {
 
     private HttpHelper() {
         Retrofit.Builder builder = new Retrofit.Builder();
-        builder.client(new OkHttpClient() {
-            @Override
-            public List<Interceptor> interceptors() {
-                return super.interceptors();
-            }
-        });
         if (TextUtils.isEmpty(getBaseUrl())) {
             throw new NullPointerException("init(Context,httpBaseUrl)：httpBaseUrl is not null");
         }
-        mRetrofit = builder.addConverterFactory(GsonConverterFactory.create())
-                .baseUrl(getBaseUrl())
-                .build();
+        mRetrofit = builder.baseUrl(getBaseUrl()).build();
     }
 
     public static HttpHelper getInstance() {
@@ -103,7 +95,7 @@ public final class HttpHelper {
         return call;
     }
 
-    public static <T> Call upload(Request request, HttpResponseListener<T> httpResponseListener) {
+    public static Call upload(Request request, final UploadListener uploadListener) {
         if (request.getUploadFiles() == null || !request.getUploadFiles().get(0).exists()) {
             new FileNotFoundException("file does not exist(文件不存在)").printStackTrace();
         }
@@ -111,18 +103,38 @@ public final class HttpHelper {
         RequestBody requestBody = RequestBody.create(request.getMediaType(), request.getUploadFiles().get(0));
         requestBodyMap.put("file[]\"; filename=\"" + request.getUploadFiles().get(0).getName(), requestBody);
 
+        String httpUrl = request.getApiUlr().trim();
+        String tempUrl = httpUrl.substring(0, httpUrl.length() - 1);
+        String baseUrl = tempUrl.substring(0, tempUrl.lastIndexOf(File.separator) + 1);
+        if (L.isDebug) {
+            L.i("httpUrl:" + httpUrl);
+            L.i("tempUrl:" + tempUrl);
+            L.i("baseUrl:" + baseUrl);
+            L.i("apiUrl:" + httpUrl.substring(baseUrl.length()));
+        }
         Retrofit retrofit = new Retrofit.Builder()
-                .addConverterFactory(new ChunkingConverterFactory(requestBody, httpResponseListener))
+                .addConverterFactory(new ChunkingConverterFactory(requestBody, uploadListener))
                 .addConverterFactory(GsonConverterFactory.create())
-                .baseUrl(request.getApiUlr())
+                .baseUrl(baseUrl)
                 .build();
         HttpService service = retrofit.create(HttpService.class);
 
         Call<ResponseBody> model = service.upload(
-                ""
+                httpUrl.substring(baseUrl.length())
                 , "uploadDes"
                 , requestBodyMap);
-        parseNetData(model, httpResponseListener);
+
+        model.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                uploadListener.onResponse(call, response);
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                uploadListener.onFailure(call, t);
+            }
+        });
         return model;
     }
 

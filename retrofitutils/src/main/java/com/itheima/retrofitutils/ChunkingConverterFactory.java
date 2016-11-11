@@ -1,6 +1,9 @@
 package com.itheima.retrofitutils;
 
 
+import com.itheima.retrofitutils.listener.HttpResponseListener;
+import com.itheima.retrofitutils.listener.UploadListener;
+
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.annotation.Retention;
@@ -32,9 +35,9 @@ public class ChunkingConverterFactory extends Converter.Factory {
     private BufferedSink bufferedSink;
     private final RequestBody requestBody;
 
-    private final HttpResponseListener listener;
+    private final UploadListener listener;
 
-    public ChunkingConverterFactory(RequestBody requestBody, HttpResponseListener listener) {
+    public ChunkingConverterFactory(RequestBody requestBody, UploadListener listener) {
         this.requestBody = requestBody;
         this.listener = listener;
     }

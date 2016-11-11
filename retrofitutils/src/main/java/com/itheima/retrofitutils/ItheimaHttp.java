@@ -2,6 +2,9 @@ package com.itheima.retrofitutils;
 
 import android.content.Context;
 
+import com.itheima.retrofitutils.listener.HttpResponseListener;
+import com.itheima.retrofitutils.listener.UploadListener;
+
 import retrofit2.Call;
 
 /**
@@ -44,8 +47,8 @@ public class ItheimaHttp {
         }
     }
 
-    public static <T> Call upload(Request request, HttpResponseListener<T> httpResponseListener) {
-        return HttpHelper.upload(request, httpResponseListener);
+    public static Call upload(Request request, UploadListener uploadListener) {
+        return HttpHelper.upload(request, uploadListener);
     }
 
     /**

@@ -100,17 +100,20 @@ Call call = ItheimaHttp.postAsync(apiUrl, new HttpResponseListener<Bean>() {
 Request request = ItheimaHttp.newUploadRequest("http://xxx/xxx/xxx/", RequestMethod.GET);//地址最后一定记得加斜杠
 request.putUploadFile(uploadFile)
         .putMediaType(MediaType.parse("image/jpg"));
-ItheimaHttp.upload(request, new HttpResponseListener<String>() {
+ItheimaHttp.upload(request, new UploadListener() {
     @Override
-    public void onResponse(String s) {
+    public void onResponse(Call call, Response response) {
+        //上传成功回调
     }
-
+    
     @Override
     public void onProgress(long progress, long total, boolean done) {
+        //上传进度回调progress:上传进度，total:文件长度， done:上传是否完成
     }
 
     @Override
-    public void onFailure(Call<ResponseBody> call, Throwable e) {
+    public void onFailure(Call call, Throwable t) {
+        //上传失败
     }
 });
 ```
@@ -124,3 +127,6 @@ call.cancel();
 ```
 ItheimaHttp.isDebug(true);
 ```
+
+####开源群
+415094387
