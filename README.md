@@ -97,7 +97,7 @@ Call call = ItheimaHttp.postAsync(apiUrl, new HttpResponseListener<Bean>() {
 
 ####文件上传
 ```
-Request request = ItheimaHttp.newUploadRequest("http://xxx/xxx/xxx/", RequestMethod.GET);//地址最后一定记得加斜杠
+Request request = ItheimaHttp.newUploadRequest("http://xxx/xxx/xxx", RequestMethod.GET);
 request.putUploadFile(uploadFile)
         .putMediaType(MediaType.parse("multipart/form-data"));
 ItheimaHttp.upload(request, new UploadListener() {
