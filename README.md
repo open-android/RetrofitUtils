@@ -18,7 +18,7 @@ allprojects {
 
 在build.gradle添加依赖
 ```
-compile 'com.github.itcastsh:retrofitUtils:0.1.4'
+compile 'com.github.itcastsh:retrofitUtils:0.1.8'
 ```
 
 ####需要的权限
@@ -97,7 +97,7 @@ Call call = ItheimaHttp.postAsync(apiUrl, new HttpResponseListener<Bean>() {
 
 ####文件上传
 ```
-Request request = ItheimaHttp.newUploadRequest("http://xxx/xxx/xxx", RequestMethod.GET);
+Request request = ItheimaHttp.newUploadRequest("http://xxx/xxx/xxx", RequestMethod.POST);
 request.putUploadFile(uploadFile)
         .putMediaType(MediaType.parse("multipart/form-data"));
 ItheimaHttp.upload(request, new UploadListener() {
