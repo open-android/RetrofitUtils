@@ -17,7 +17,7 @@ public class Request {
     private Map<String, Object> mParamsMap;
     private List<File> mUploadFiles;
     private String mApiUlr;
-    private RequestMethod mRequestMethod;
+    private RequestMethod mRequestMethod = RequestMethod.GET;
 
     private MediaType mMediaType = MediaType.parse("application/otcet-stream");
 

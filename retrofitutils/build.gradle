@@ -31,10 +31,5 @@ android {
 dependencies {
     compile 'com.squareup.retrofit2:retrofit:2.1.0'
     compile 'com.squareup.retrofit2:converter-gson:2.1.0'
-/*    compile 'com.github.jitpack:android-example:1.0.1'*/
-
 }
-/*plugins {
-    id "com.jfrog.bintray" version "1.7.2"
-}*/
 

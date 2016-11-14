@@ -47,7 +47,7 @@ public class ItheimaHttp {
         }
     }
 
-    public static Call upload(Request request, UploadListener uploadListener) {
+    public static <T> Call upload(Request request, UploadListener uploadListener) {
         return HttpHelper.upload(request, uploadListener);
     }
 

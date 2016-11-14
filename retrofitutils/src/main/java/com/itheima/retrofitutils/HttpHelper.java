@@ -118,8 +118,20 @@ public final class HttpHelper {
                 .baseUrl(baseUrl)
                 .build();
         HttpService service = retrofit.create(HttpService.class);
+        Call<ResponseBody> model = null;
+       /* if (RequestMethod.GET.equals(request.getRequestMethod())) {
+            model = service.getUpload(
+                    httpUrl.substring(baseUrl.length())
+                    , "uploadDes"
+                    , requestBodyMap);
+        } else {
+            model = service.postUpload(
+                    httpUrl.substring(baseUrl.length())
+                    , "uploadDes"
+                    , requestBodyMap);
+        }*/
 
-        Call<ResponseBody> model = service.upload(
+        model = service.postUpload(
                 httpUrl.substring(baseUrl.length())
                 , "uploadDes"
                 , requestBodyMap);
@@ -173,14 +185,18 @@ public final class HttpHelper {
 
     public static interface HttpService<T> {
         @GET
-        public Call<ResponseBody> get(@Url String url, @HeaderMap Map<String, String> headers, @QueryMap Map<String, Object> param);
+        Call<ResponseBody> get(@Url String url, @HeaderMap Map<String, String> headers, @QueryMap Map<String, Object> param);
 
         @FormUrlEncoded
         @POST
-        public Call<ResponseBody> post(@Url String url, @HeaderMap Map<String, String> headers, @FieldMap Map<String, Object> param);
+        Call<ResponseBody> post(@Url String url, @HeaderMap Map<String, String> headers, @FieldMap Map<String, Object> param);
 
         @Multipart
         @POST
-        Call<String> upload(@Url String url, @Part("filedes") String des, @PartMap Map<String, RequestBody> params);
+        Call<String> postUpload(@Url String url, @Part("filedes") String des, @PartMap Map<String, RequestBody> params);
+
+        @Multipart
+        @GET
+        Call<String> getUpload(@Url String url, @Part("filedes") String des, @PartMap Map<String, RequestBody> params);
     }
 }

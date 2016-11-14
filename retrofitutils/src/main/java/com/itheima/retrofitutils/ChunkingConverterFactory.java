@@ -1,7 +1,6 @@
 package com.itheima.retrofitutils;
 
 
-import com.itheima.retrofitutils.listener.HttpResponseListener;
 import com.itheima.retrofitutils.listener.UploadListener;
 
 import java.io.IOException;
