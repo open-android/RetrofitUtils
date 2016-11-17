@@ -29,7 +29,4 @@ public abstract class HttpResponseListener<T> {
     public void onFailure(Call<ResponseBody> call, Throwable e) {
         L.e(e);
     }
-
-    public void onProgress(long progress, long total, boolean done) {
-    }
 }

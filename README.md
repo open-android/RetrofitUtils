@@ -63,6 +63,9 @@ request.putParams(key,value)
 .putParams(key,value)
 .putParams(key,value);
 
+
+Map<String,Object> map = new HashMap<>();
+map.put(key,value);
 request.putParamsMap(map);
 ```
 ####添加请求头
@@ -73,7 +76,7 @@ request.putHeader(key,value)
 ```
 ####get/post String类型异步请求
 ```
-Call call = ItheimaHttp.getAsync(apiUrl, httpResponseListener<String>);
+Call call = ItheimaHttp.getAsync(apiUrl, new HttpResponseListener<String>);
 
 Call call = ItheimaHttp.postAsync(apiUrl, new HttpResponseListener<String>() {
     @Override
