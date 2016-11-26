@@ -89,7 +89,7 @@ Call call = ItheimaHttp.postAsync(apiUrl, new HttpResponseListener<String>() {
 
 ###get/post Bean类型异步请求,内部使用Gson解析json数据
 ```java
-Call call = ItheimaHttp.getAsync(apiUrl, httpResponseListener<Bean>);
+Call call = ItheimaHttp.getAsync(apiUrl, new HttpResponseListener<Bean>);
 
 Call call = ItheimaHttp.postAsync(apiUrl, new HttpResponseListener<Bean>() {
     @Override
