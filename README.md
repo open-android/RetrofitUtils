@@ -18,7 +18,7 @@ allprojects {
  
 在build.gradle添加依赖
 ```xml
-compile 'com.github.itcastsh:retrofitUtils:0.1.8'
+compile 'com.github.open-android:RetrofitUtils:0.1.9'
 ```
 
 ###需要的权限
