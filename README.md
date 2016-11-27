@@ -129,7 +129,7 @@ call.cancel();
 
 ###是否需要查看日志
 ```java
-ItheimaHttp.isDebug(true);
+ItheimaHttp.setDebug(true);
 ```
 
 ###交流群

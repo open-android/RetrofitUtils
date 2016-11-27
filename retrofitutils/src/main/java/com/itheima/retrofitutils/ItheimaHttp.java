@@ -90,7 +90,7 @@ public class ItheimaHttp {
      *
      * @param isDebug
      */
-    public static void isDebug(boolean isDebug) {
+    public static void setDebug(boolean isDebug) {
         L.isDebug = isDebug;
     }
 }
