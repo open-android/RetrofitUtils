@@ -15,7 +15,7 @@ allprojects {
 }
 ```
 ![image](jitpack.png)
-
+ 
 在build.gradle添加依赖
 ```xml
 compile 'com.github.itcastsh:retrofitUtils:0.1.8'
