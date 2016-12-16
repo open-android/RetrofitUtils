@@ -73,6 +73,13 @@ public final class HttpHelper {
     }
 
     private HttpHelper() {
+        //缓存路径
+        mCacheFile = new File(ItheimaHttp.getContext().getCacheDir().getAbsolutePath() + File.separator + "retrofit2_http_cache");
+        //判断缓存路径是否存在
+        if (!mCacheFile.exists() && !mCacheFile.isDirectory()) {
+            mCacheFile.mkdir();
+        }
+
         OkHttpClient okHttpClient = createOkhttpAndCache();
         mRetrofit = new Retrofit.Builder()
                 .baseUrl(sBaseUrl)
@@ -80,12 +87,6 @@ public final class HttpHelper {
                 .addConverterFactory(StringConverterFactory.create())
                 //.addConverterFactory(GsonConverterFactory.create())
                 .build();
-        //缓存路径
-        mCacheFile = new File(ItheimaHttp.getContext().getCacheDir().getAbsolutePath() + File.separator + "retrofit2_http_cache");
-        //判断缓存路径是否存在
-        if (!mCacheFile.exists() && !mCacheFile.isDirectory()) {
-            mCacheFile.mkdir();
-        }
 
     }
 
