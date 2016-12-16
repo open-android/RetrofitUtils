@@ -1,5 +1,8 @@
 package com.itheima.retrofitutils;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.text.TextUtils;
 
 import com.google.gson.Gson;
@@ -8,10 +11,16 @@ import com.itheima.retrofitutils.listener.UploadListener;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
+import okhttp3.Cache;
+import okhttp3.CacheControl;
+import okhttp3.Interceptor;
+import okhttp3.OkHttpClient;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -35,25 +44,75 @@ import retrofit2.http.Url;
  */
 
 public final class HttpHelper {
-    private volatile static WeakReference<HttpHelper> sInstance;
-    private final Retrofit mRetrofit;
+    private static WeakReference<HttpHelper> sInstance;
+    private volatile Retrofit mRetrofit;
 
     private static String sBaseUrl;
+
+    private File mCacheFile;
+    private ConnectivityManager mCm;
+    //默认支持http缓存
+    private static boolean mIsCache = true;
 
     public static void setBaseUrl(String baseUrl) {
         sBaseUrl = baseUrl;
     }
+
+    /**
+     * 设置是否缓存http请求数据
+     *
+     * @param isCache
+     */
+    public static void setHttpCache(boolean isCache) {
+        mIsCache = isCache;
+    }
+
 
     public static String getBaseUrl() {
         return sBaseUrl;
     }
 
     private HttpHelper() {
-        Retrofit.Builder builder = new Retrofit.Builder();
-        if (TextUtils.isEmpty(getBaseUrl())) {
-            throw new NullPointerException("init(Context,httpBaseUrl)：httpBaseUrl is not null");
+        OkHttpClient okHttpClient = createOkhttpAndCache();
+        mRetrofit = new Retrofit.Builder()
+                .baseUrl(sBaseUrl)
+                .client(okHttpClient)
+                .addConverterFactory(StringConverterFactory.create())
+                //.addConverterFactory(GsonConverterFactory.create())
+                .build();
+        //缓存路径
+        mCacheFile = new File(ItheimaHttp.getContext().getCacheDir().getAbsolutePath() + File.separator + "retrofit2_http_cache");
+        //判断缓存路径是否存在
+        if (!mCacheFile.exists() && !mCacheFile.isDirectory()) {
+            mCacheFile.mkdir();
         }
-        mRetrofit = builder.baseUrl(getBaseUrl()).build();
+
+    }
+
+    /**
+     * 创建okhttp & 添加缓存
+     *
+     * @return
+     */
+    private OkHttpClient createOkhttpAndCache() {
+        OkHttpClient.Builder builder = new OkHttpClient.Builder();
+        if (mIsCache) {
+            //http缓存大小10M
+            Cache cache = new Cache(mCacheFile, 1024 * 1024 * 10);
+            //添加网络过滤 & 实现网络数据缓存
+            Interceptor interceptor = createHttpInterceptor();
+            builder.addNetworkInterceptor(interceptor);
+            builder.addInterceptor(interceptor);
+            //给okhttp添加缓存
+            builder.cache(cache);
+        }
+        //设置超时
+        builder.connectTimeout(10, TimeUnit.SECONDS);
+        builder.readTimeout(20, TimeUnit.SECONDS);
+        builder.writeTimeout(20, TimeUnit.SECONDS);
+        //错误重连
+        builder.retryOnConnectionFailure(true);
+        return builder.build();
     }
 
     public static HttpHelper getInstance() {
@@ -180,6 +239,52 @@ public final class HttpHelper {
                 httpResponseListener.onFailure(call, t);
             }
         });
+    }
+
+    /**
+     * 创建网络过滤对象，添加缓存
+     *
+     * @return
+     */
+    private Interceptor createHttpInterceptor() {
+        return new Interceptor() {
+            @Override
+            public okhttp3.Response intercept(Chain chain) throws IOException {
+                okhttp3.Request request = chain.request();
+
+                //获取网络状态
+                if (mCm == null) {
+                    mCm = (ConnectivityManager) ItheimaHttp.getContext()
+                            .getSystemService(Context.CONNECTIVITY_SERVICE);
+                }
+                NetworkInfo networkInfo = mCm.getActiveNetworkInfo();
+                boolean isNetwork = (networkInfo != null && networkInfo.isConnected());
+
+                //没有网络情况下，仅仅使用缓存（CacheControl.FORCE_CACHE;）
+                if (!isNetwork) {
+                    request = request.newBuilder()
+                            .cacheControl(CacheControl.FORCE_CACHE)
+                            .build();
+                }
+                okhttp3.Response response = chain.proceed(request);
+                if (isNetwork) {
+                    int maxAge = 0;
+                    // 有网络时, 不缓存, 最大保存时长为0
+                    response.newBuilder()
+                            .header("Cache-Control", "public, max-age=" + maxAge)
+                            .removeHeader("Pragma")
+                            .build();
+                } else {
+                    // 无网络时，设置超时为4周
+                    int maxStale = 60 * 60 * 24 * 28;
+                    response.newBuilder()
+                            .header("Cache-Control", "public, only-if-cached, max-stale=" + maxStale)
+                            .removeHeader("Pragma")
+                            .build();
+                }
+                return response;
+            }
+        };
     }
 
 

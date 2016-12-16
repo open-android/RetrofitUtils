@@ -1,5 +1,6 @@
 package com.itheima.retrofitutils;
 
+import android.app.Application;
 import android.content.Context;
 
 import com.itheima.retrofitutils.listener.HttpResponseListener;
@@ -13,7 +14,18 @@ import retrofit2.Call;
 
 public class ItheimaHttp {
 
+    private static Context mContext;
+
+    public static Context getContext() {
+        return mContext;
+    }
+
+    public static void setHttpCache(boolean cache){
+        HttpHelper.setHttpCache(cache);
+    }
+
     public static final void init(Context context, String httpBaseUrl) {
+        mContext = context.getApplicationContext();
         HttpHelper.setBaseUrl(httpBaseUrl);
     }
 

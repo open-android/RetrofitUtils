@@ -18,7 +18,7 @@ allprojects {
  
 在build.gradle添加依赖
 ```xml
-compile 'com.github.open-android:RetrofitUtils:0.1.9'
+compile 'com.github.open-android:RetrofitUtils:0.2.9'
 ```
 
 ###需要的权限
@@ -32,6 +32,11 @@ compile 'com.github.open-android:RetrofitUtils:0.1.9'
 retrofitUtils初始化需要二个参数Context、baseUrl，最好在Application的onCreate()中初始化，记得在manifest.xml中注册Application。
 ```java
 ItheimaHttp.init(this, baseUrl);//baseUrl格式："http://xxxxxx/xxxxx/"
+```
+
+###设置是否缓存http响应数据（默认支持缓存）
+```java
+ItheimaHttp.setHttpCache(false);//false不缓存，true缓存
 ```
 
 ###get/Post Bean类型异步请求（内部使用Gson解析json数据）
