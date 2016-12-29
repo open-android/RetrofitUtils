@@ -2,6 +2,9 @@
 
 Retrofit封装框架，内部使用gson解析json数据
 
+* 简 书：http://www.jianshu.com/p/bd746ab64fbe
+* CSDN: http://blog.csdn.net/mwq384807683/article/details/53611961
+
 开始
 ===
 在project的build.gradle添加如下代码(如下图)
@@ -23,9 +26,10 @@ compile 'com.github.open-android:RetrofitUtils:0.2.10'
 
 ###需要的权限
 ```xml
-<uses-permission android:name="android.permission.INTERNET" />
-<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 ```
 
 ###初始化
