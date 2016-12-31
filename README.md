@@ -18,7 +18,7 @@ allprojects {
  
 在build.gradle添加依赖
 ```xml
-compile 'com.github.open-android:RetrofitUtils:0.2.10'
+compile 'com.github.open-android:RetrofitUtils:0.2.11'
 ```
 
 ###需要的权限
@@ -26,6 +26,7 @@ compile 'com.github.open-android:RetrofitUtils:0.2.10'
 <uses-permission android:name="android.permission.INTERNET" />
 <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 ```
 
 ###初始化

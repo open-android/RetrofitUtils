@@ -50,7 +50,6 @@ public final class HttpHelper {
     private static String sBaseUrl;
 
     private File mCacheFile;
-    private ConnectivityManager mCm;
     //默认支持http缓存
     private static boolean mIsCache = true;
 
@@ -254,12 +253,10 @@ public final class HttpHelper {
                 okhttp3.Request request = chain.request();
 
                 //获取网络状态
-                if (mCm == null) {
-                    mCm = (ConnectivityManager) ItheimaHttp.getContext()
-                            .getSystemService(Context.CONNECTIVITY_SERVICE);
-                }
+                ConnectivityManager mCm = (ConnectivityManager) ItheimaHttp.getContext()
+                        .getSystemService(Context.CONNECTIVITY_SERVICE);
                 NetworkInfo networkInfo = mCm.getActiveNetworkInfo();
-                boolean isNetwork = (networkInfo != null && networkInfo.isConnected());
+                boolean isNetwork = (networkInfo != null && networkInfo.isConnected() && networkInfo.isAvailable());
 
                 //没有网络情况下，仅仅使用缓存（CacheControl.FORCE_CACHE;）
                 if (!isNetwork) {
