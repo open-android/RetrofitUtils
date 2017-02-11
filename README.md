@@ -2,6 +2,9 @@
 
 Retrofit封装框架，内部使用gson解析json数据
 
+* 简 书：http://www.jianshu.com/p/bd746ab64fbe
+* CSDN：http://blog.csdn.net/mwq384807683/article/details/53013004
+
 
 * 爱生活,爱学习,更爱做代码的搬运工,分类查找更方便请下载黑马助手app
 
