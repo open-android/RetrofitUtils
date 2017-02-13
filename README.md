@@ -71,6 +71,26 @@ Call call = ItheimaHttp.send(request, new HttpResponseListener<Bean>() {
 @param httpResponseListener 回调监听
 @param <T> Bean
 @return Call可以取消网络请求
+
+Request request = ItheimaHttp.newGetRequest(apiUrl);//apiUrl格式："xxx/xxxxx"
+Call call = ItheimaHttp.send(request, new HttpResponseListener<String>() {
+    @Override
+    public void onResponse(String string) {
+        ........
+    }
+     /**
+     * 可以不重写失败回调
+     * @param call
+     * @param e
+     */
+    @Override
+    public void onFailure(Call<ResponseBody> call, Throwable e) {
+        ......
+    }
+});
+@param httpResponseListener 回调监听
+@param <T> Bean
+@return Call可以取消网络请求
 ```
 ###添加请求参数
 ```java
