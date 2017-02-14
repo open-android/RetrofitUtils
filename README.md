@@ -2,10 +2,8 @@
 
 Retrofit封装框架，内部使用gson解析json数据
 
-* 简 书：http://www.jianshu.com/p/bd746ab64fbe
-* CSDN：http://blog.csdn.net/mwq384807683/article/details/53013004
 
-PS：如果觉得文章太长，你也可观看该课程的[视频](https://www.boxuegu.com/web/html/video.html?courseId=172&sectionId=8a2c9bed5a3a4c7e015a3ad9a490030d&chapterId=8a2c9bed5a3a4c7e015a3ad9dfdf030e&vId=8a2c9bed5a3a4c7e015a3adaaaa9030f&videoId=4DC518DB11BC473E9C33DC5901307461)，亲，里面还有高清，无码的福利喔
+ PS：如果觉得文章太长，你也可观看该课程的[视频](https://www.boxuegu.com/web/html/video.html?courseId=172&sectionId=8a2c9bed5a3a4c7e015a3ad9a490030d&chapterId=8a2c9bed5a3a4c7e015a3ad9dfdf030e&vId=8a2c9bed5a3a4c7e015a3adaaaa9030f&videoId=4DC518DB11BC473E9C33DC5901307461)，亲，里面还有高清，无码的福利喔
 
 
 * 爱生活,爱学习,更爱做代码的搬运工,分类查找更方便请下载黑马助手app
