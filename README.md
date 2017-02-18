@@ -27,7 +27,7 @@ allprojects {
  
 在build.gradle添加依赖
 ```xml
-compile 'com.github.open-android:RetrofitUtils:0.2.11'
+compile 'com.github.open-android:RetrofitUtils:0.3.12'
 ```
 
 ###需要的权限
