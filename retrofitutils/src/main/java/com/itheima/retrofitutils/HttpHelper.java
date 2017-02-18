@@ -222,9 +222,9 @@ public final class HttpHelper {
                     if (!String.class.equals(httpResponseListener.getType())) {
                         Gson gson = new Gson();
                         T t = gson.fromJson(json, httpResponseListener.getType());
-                        httpResponseListener.onResponse(t);
+                        httpResponseListener.onResponse(t,response.headers());
                     } else {
-                        httpResponseListener.onResponse((T) json);
+                        httpResponseListener.onResponse((T) json,response.headers());
                     }
                 } catch (Exception e) {
                     if (L.isDebug) {
@@ -252,11 +252,7 @@ public final class HttpHelper {
             public okhttp3.Response intercept(Chain chain) throws IOException {
                 okhttp3.Request request = chain.request();
 
-                //获取网络状态
-                ConnectivityManager mCm = (ConnectivityManager) ItheimaHttp.getContext()
-                        .getSystemService(Context.CONNECTIVITY_SERVICE);
-                NetworkInfo networkInfo = mCm.getActiveNetworkInfo();
-                boolean isNetwork = (networkInfo != null && networkInfo.isConnected() && networkInfo.isAvailable());
+                boolean isNetwork = isNetworkConnected(ItheimaHttp.getContext());
 
                 //没有网络情况下，仅仅使用缓存（CacheControl.FORCE_CACHE;）
                 if (!isNetwork) {
@@ -283,6 +279,24 @@ public final class HttpHelper {
                 return response;
             }
         };
+    }
+
+    /**
+     * 判断是否有网络连接
+     *
+     * @param context
+     * @return
+     */
+    public static boolean isNetworkConnected(Context context) {
+        if (context != null) {
+            ConnectivityManager mConnectivityManager = (ConnectivityManager) context
+                    .getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo mNetworkInfo = mConnectivityManager.getActiveNetworkInfo();
+            if (mNetworkInfo != null) {
+                return mNetworkInfo.isAvailable();
+            }
+        }
+        return false;
     }
 
 
