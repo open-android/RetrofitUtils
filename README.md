@@ -2,6 +2,15 @@
 
 Retrofit封装框架，内部使用gson解析json数据
 
+
+ PS：如果觉得文章太长，你也可观看该课程的[视频](https://www.boxuegu.com/web/html/video.html?courseId=172&sectionId=8a2c9bed5a3a4c7e015a3ad9a490030d&chapterId=8a2c9bed5a3a4c7e015a3ad9dfdf030e&vId=8a2c9bed5a3a4c7e015a3adaaaa9030f&videoId=4DC518DB11BC473E9C33DC5901307461)，亲，里面还有高清，无码的福利喔
+
+
+* 爱生活,爱学习,更爱做代码的搬运工,分类查找更方便请下载黑马助手app
+
+
+![黑马助手.png](http://upload-images.jianshu.io/upload_images/4037105-f777f1214328dcc4.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
 开始
 ===
 在project的build.gradle添加如下代码(如下图)
@@ -47,6 +56,26 @@ Request request = ItheimaHttp.newGetRequest(apiUrl);//apiUrl格式："xxx/xxxxx"
 Call call = ItheimaHttp.send(request, new HttpResponseListener<Bean>() {
     @Override
     public void onResponse(Bean bean) {
+        ........
+    }
+     /**
+     * 可以不重写失败回调
+     * @param call
+     * @param e
+     */
+    @Override
+    public void onFailure(Call<ResponseBody> call, Throwable e) {
+        ......
+    }
+});
+@param httpResponseListener 回调监听
+@param <T> Bean
+@return Call可以取消网络请求
+
+Request request = ItheimaHttp.newGetRequest(apiUrl);//apiUrl格式："xxx/xxxxx"
+Call call = ItheimaHttp.send(request, new HttpResponseListener<String>() {
+    @Override
+    public void onResponse(String string) {
         ........
     }
      /**
@@ -138,9 +167,11 @@ call.cancel();
 ItheimaHttp.setDebug(true);
 ```
 
-###交流群
-```
-334700525
-```
+* 详细的使用方法在DEMO里面都演示啦,如果你觉得这个库还不错,请赏我一颗star吧~~~
+
+* 欢迎关注微信公众号
+
+![](http://upload-images.jianshu.io/upload_images/4037105-8f737b5104dd0b5d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
 
 [回到顶部](#readme)
