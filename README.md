@@ -55,7 +55,7 @@ ItheimaHttp.setHttpCache(false);//false不缓存，true缓存
 Request request = ItheimaHttp.newGetRequest(apiUrl);//apiUrl格式："xxx/xxxxx"
 Call call = ItheimaHttp.send(request, new HttpResponseListener<Bean>() {
     @Override
-    public void onResponse(Bean bean, Headers headers {
+    public void onResponse(Bean bean, Headers headers) {
         ........
     }
      /**
