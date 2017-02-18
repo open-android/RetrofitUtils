@@ -55,7 +55,7 @@ ItheimaHttp.setHttpCache(false);//false不缓存，true缓存
 Request request = ItheimaHttp.newGetRequest(apiUrl);//apiUrl格式："xxx/xxxxx"
 Call call = ItheimaHttp.send(request, new HttpResponseListener<Bean>() {
     @Override
-    public void onResponse(Bean bean) {
+    public void onResponse(Bean bean, Headers headers {
         ........
     }
      /**
@@ -75,7 +75,7 @@ Call call = ItheimaHttp.send(request, new HttpResponseListener<Bean>() {
 Request request = ItheimaHttp.newGetRequest(apiUrl);//apiUrl格式："xxx/xxxxx"
 Call call = ItheimaHttp.send(request, new HttpResponseListener<String>() {
     @Override
-    public void onResponse(String string) {
+    public void onResponse(String string, Headers headers) {
         ........
     }
      /**
@@ -116,7 +116,7 @@ Call call = ItheimaHttp.getAsync(apiUrl, new HttpResponseListener<String>);
 
 Call call = ItheimaHttp.postAsync(apiUrl, new HttpResponseListener<String>() {
     @Override
-    public void onResponse(String s) {
+    public void onResponse(String s, Headers headers) {
         ........
     }
 });
@@ -128,7 +128,7 @@ Call call = ItheimaHttp.getAsync(apiUrl, new HttpResponseListener<Bean>);
 
 Call call = ItheimaHttp.postAsync(apiUrl, new HttpResponseListener<Bean>() {
     @Override
-    public void onResponse(Bean bean) {
+    public void onResponse(Bean bean, Headers headers) {
         ........
     }
 });
