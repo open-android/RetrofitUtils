@@ -39,17 +39,17 @@ compile 'com.github.open-android:RetrofitUtils:0.3.12'
 
 ###初始化
 retrofitUtils初始化需要二个参数Context、baseUrl，最好在Application的onCreate()中初始化，记得在manifest.xml中注册Application。
-```class
+```java
 ItheimaHttp.init(this, baseUrl);//baseUrl格式："http://xxxxxx/xxxxx/"
 ```
 
 ###设置是否缓存http响应数据（默认支持缓存）
-```class
+```java
 ItheimaHttp.setHttpCache(false);//false不缓存，true缓存
 ```
 
 ###get/Post Bean类型异步请求（内部使用Gson解析json数据）
-```class
+```java
 //ItheimaHttp.newPostRequest(apiUrl)
 Request request = ItheimaHttp.newGetRequest(apiUrl);//apiUrl格式："xxx/xxxxx"
 Call call = ItheimaHttp.send(request, new HttpResponseListener<Bean>() {
@@ -74,7 +74,7 @@ Call call = ItheimaHttp.send(request, new HttpResponseListener<Bean>() {
 ```
 
 
-```class
+```java
 Request request = ItheimaHttp.newGetRequest(apiUrl);//apiUrl格式："xxx/xxxxx"
 Call call = ItheimaHttp.send(request, new HttpResponseListener<String>() {
     @Override
@@ -98,7 +98,7 @@ Call call = ItheimaHttp.send(request, new HttpResponseListener<String>() {
 ```
 
 ###添加请求参数
-```class
+```java
 request.putParams(key,value)
 .putParams(key,value)
 .putParams(key,value);
@@ -109,14 +109,14 @@ map.put(key,value);
 request.putParamsMap(map);
 ```
 ###添加请求头
-```class
+```java
 //添加请求头
 request.putHeader(key,value)
 .putHeader(key,value);
 ```
 
 ###get/post String类型异步请求
-```class
+```java
 Call call = ItheimaHttp.getAsync(apiUrl, new HttpResponseListener<String>);
 
 Call call = ItheimaHttp.postAsync(apiUrl, new HttpResponseListener<String>() {
@@ -128,7 +128,7 @@ Call call = ItheimaHttp.postAsync(apiUrl, new HttpResponseListener<String>() {
 ```
 
 ###get/post Bean类型异步请求,内部使用Gson解析json数据
-```class
+```java
 Call call = ItheimaHttp.getAsync(apiUrl, new HttpResponseListener<Bean>);
 
 Call call = ItheimaHttp.postAsync(apiUrl, new HttpResponseListener<Bean>() {
@@ -140,7 +140,7 @@ Call call = ItheimaHttp.postAsync(apiUrl, new HttpResponseListener<Bean>() {
 ```
 
 ###文件上传
-```class
+```java
 Request request = ItheimaHttp.newUploadRequest("http://xxx/xxx/xxx", RequestMethod.POST);
 request.putUploadFile(uploadFile)
         .putMediaType(MediaType.parse("multipart/form-data"));
@@ -163,12 +163,12 @@ ItheimaHttp.upload(request, new UploadListener() {
 ```
 
 ###取消网络请求
-```class
+```java
 call.cancel();
 ```
 
 ###是否需要查看日志
-```class
+```java
 ItheimaHttp.setDebug(true);
 ```
 
