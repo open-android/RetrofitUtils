@@ -14,10 +14,9 @@ Retrofit封装框架，内部使用gson解析json数据
 开始
 ===
 在project的build.gradle添加如下代码(如下图)
-```xml
+```groovy
 allprojects {
     repositories {
-        ...
         jcenter()
         maven { url "https://jitpack.io" }
     }
@@ -26,7 +25,7 @@ allprojects {
 ![image](jitpack.png)
  
 在build.gradle添加依赖
-```xml
+```groovy
 compile 'com.github.open-android:RetrofitUtils:0.3.12'
 ```
 
@@ -40,17 +39,17 @@ compile 'com.github.open-android:RetrofitUtils:0.3.12'
 
 ###初始化
 retrofitUtils初始化需要二个参数Context、baseUrl，最好在Application的onCreate()中初始化，记得在manifest.xml中注册Application。
-```java
+```class
 ItheimaHttp.init(this, baseUrl);//baseUrl格式："http://xxxxxx/xxxxx/"
 ```
 
 ###设置是否缓存http响应数据（默认支持缓存）
-```java
+```class
 ItheimaHttp.setHttpCache(false);//false不缓存，true缓存
 ```
 
 ###get/Post Bean类型异步请求（内部使用Gson解析json数据）
-```java
+```class
 //ItheimaHttp.newPostRequest(apiUrl)
 Request request = ItheimaHttp.newGetRequest(apiUrl);//apiUrl格式："xxx/xxxxx"
 Call call = ItheimaHttp.send(request, new HttpResponseListener<Bean>() {
@@ -75,7 +74,7 @@ Call call = ItheimaHttp.send(request, new HttpResponseListener<Bean>() {
 ```
 
 
-```java
+```class
 Request request = ItheimaHttp.newGetRequest(apiUrl);//apiUrl格式："xxx/xxxxx"
 Call call = ItheimaHttp.send(request, new HttpResponseListener<String>() {
     @Override
@@ -99,7 +98,7 @@ Call call = ItheimaHttp.send(request, new HttpResponseListener<String>() {
 ```
 
 ###添加请求参数
-```java
+```class
 request.putParams(key,value)
 .putParams(key,value)
 .putParams(key,value);
@@ -110,14 +109,14 @@ map.put(key,value);
 request.putParamsMap(map);
 ```
 ###添加请求头
-```java
+```class
 //添加请求头
 request.putHeader(key,value)
 .putHeader(key,value);
 ```
 
 ###get/post String类型异步请求
-```java
+```class
 Call call = ItheimaHttp.getAsync(apiUrl, new HttpResponseListener<String>);
 
 Call call = ItheimaHttp.postAsync(apiUrl, new HttpResponseListener<String>() {
@@ -129,7 +128,7 @@ Call call = ItheimaHttp.postAsync(apiUrl, new HttpResponseListener<String>() {
 ```
 
 ###get/post Bean类型异步请求,内部使用Gson解析json数据
-```java
+```class
 Call call = ItheimaHttp.getAsync(apiUrl, new HttpResponseListener<Bean>);
 
 Call call = ItheimaHttp.postAsync(apiUrl, new HttpResponseListener<Bean>() {
@@ -141,7 +140,7 @@ Call call = ItheimaHttp.postAsync(apiUrl, new HttpResponseListener<Bean>() {
 ```
 
 ###文件上传
-```java
+```class
 Request request = ItheimaHttp.newUploadRequest("http://xxx/xxx/xxx", RequestMethod.POST);
 request.putUploadFile(uploadFile)
         .putMediaType(MediaType.parse("multipart/form-data"));
@@ -164,12 +163,12 @@ ItheimaHttp.upload(request, new UploadListener() {
 ```
 
 ###取消网络请求
-```java
+```class
 call.cancel();
 ```
 
 ###是否需要查看日志
-```java
+```class
 ItheimaHttp.setDebug(true);
 ```
 
