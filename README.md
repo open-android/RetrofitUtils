@@ -68,14 +68,14 @@ Call call = ItheimaHttp.send(request, new HttpResponseListener<Bean>() {
         ......
     }
 });
+
+@param httpResponseListener 回调监听
+@param <T> Http响应数据泛型String或者Bean(使用String可以自己解析数据)
+@return Call可以取消网络请求
 ```
 
 
 ```java
-@param httpResponseListener 回调监听
-@param <T> Bean
-@return Call可以取消网络请求
-
 Request request = ItheimaHttp.newGetRequest(apiUrl);//apiUrl格式："xxx/xxxxx"
 Call call = ItheimaHttp.send(request, new HttpResponseListener<String>() {
     @Override
@@ -92,10 +92,12 @@ Call call = ItheimaHttp.send(request, new HttpResponseListener<String>() {
         ......
     }
 });
+
 @param httpResponseListener 回调监听
-@param <T> Bean
+@param <T> Http响应数据泛型String或者Bean(使用String可以自己解析数据)
 @return Call可以取消网络请求
 ```
+
 ###添加请求参数
 ```java
 request.putParams(key,value)
