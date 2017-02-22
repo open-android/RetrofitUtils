@@ -68,6 +68,10 @@ Call call = ItheimaHttp.send(request, new HttpResponseListener<Bean>() {
         ......
     }
 });
+```
+
+
+```java
 @param httpResponseListener 回调监听
 @param <T> Bean
 @return Call可以取消网络请求
