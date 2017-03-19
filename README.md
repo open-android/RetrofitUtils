@@ -103,7 +103,6 @@ request.putParams(key,value)
 .putParams(key,value)
 .putParams(key,value);
 
-
 Map<String,Object> map = new HashMap<>();
 map.put(key,value);
 request.putParamsMap(map);
@@ -178,6 +177,5 @@ ItheimaHttp.setDebug(true);
 * 欢迎关注微信公众号
 
 ![](http://upload-images.jianshu.io/upload_images/4037105-8f737b5104dd0b5d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
-
 
 [回到顶部](#readme)
