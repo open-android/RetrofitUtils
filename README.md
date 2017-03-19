@@ -14,10 +14,9 @@ Retrofit封装框架，内部使用gson解析json数据
 开始
 ===
 在project的build.gradle添加如下代码(如下图)
-```xml
+```groovy
 allprojects {
     repositories {
-        ...
         jcenter()
         maven { url "https://jitpack.io" }
     }
@@ -26,7 +25,7 @@ allprojects {
 ![image](jitpack.png)
  
 在build.gradle添加依赖
-```xml
+```groovy
 compile 'com.github.open-android:RetrofitUtils:0.3.12'
 ```
 
@@ -68,10 +67,14 @@ Call call = ItheimaHttp.send(request, new HttpResponseListener<Bean>() {
         ......
     }
 });
-@param httpResponseListener 回调监听
-@param <T> Bean
-@return Call可以取消网络请求
 
+//@param httpResponseListener 回调监听
+//@param <T> Http响应数据泛型String或者Bean(使用String可以自己解析数据)
+//@return Call可以取消网络请求
+```
+
+
+```java
 Request request = ItheimaHttp.newGetRequest(apiUrl);//apiUrl格式："xxx/xxxxx"
 Call call = ItheimaHttp.send(request, new HttpResponseListener<String>() {
     @Override
@@ -88,10 +91,12 @@ Call call = ItheimaHttp.send(request, new HttpResponseListener<String>() {
         ......
     }
 });
-@param httpResponseListener 回调监听
-@param <T> Bean
-@return Call可以取消网络请求
+
+//@param httpResponseListener 回调监听
+//@param <T> Http响应数据泛型String或者Bean(使用String可以自己解析数据)
+//@return Call可以取消网络请求
 ```
+
 ###添加请求参数
 ```java
 request.putParams(key,value)
@@ -175,4 +180,4 @@ ItheimaHttp.setDebug(true);
 ![](http://upload-images.jianshu.io/upload_images/4037105-8f737b5104dd0b5d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 
-[回到顶部](#readme)
+[回到顶部](#readme)   
