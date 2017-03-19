@@ -26,7 +26,7 @@ allprojects {
  
 在build.gradle添加依赖
 ```groovy
-compile 'com.github.open-android:RetrofitUtils:0.3.12'
+compile 'com.github.open-android:RetrofitUtils:0.4.13'
 ```
 
 ###需要的权限
