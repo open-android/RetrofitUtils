@@ -29,6 +29,7 @@ allprojects {
 compile 'com.github.open-android:RetrofitUtils:0.4.13'
 ```
 
+
 ###需要的权限
 ```xml
 <uses-permission android:name="android.permission.INTERNET" />
