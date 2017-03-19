@@ -10,4 +10,7 @@ public enum RequestMethod {
         this.value = value;
     }
 
+    public String getValue() {
+        return value;
+    }
 }

@@ -3,9 +3,10 @@ package com.itheima.retrofitutils;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.text.TextUtils;
 
 import com.google.gson.Gson;
+import com.itheima.retrofitutils.helper.ProgressRequestBody;
+import com.itheima.retrofitutils.helper.ProgressResponseBody;
 import com.itheima.retrofitutils.listener.HttpResponseListener;
 import com.itheima.retrofitutils.listener.UploadListener;
 
@@ -20,6 +21,7 @@ import java.util.concurrent.TimeUnit;
 import okhttp3.Cache;
 import okhttp3.CacheControl;
 import okhttp3.Interceptor;
+import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
@@ -27,14 +29,12 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.HeaderMap;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
-import retrofit2.http.Part;
 import retrofit2.http.PartMap;
 import retrofit2.http.QueryMap;
 import retrofit2.http.Url;
@@ -149,16 +149,78 @@ public final class HttpHelper {
         }
         HttpService httpService = getInstance().mRetrofit.create(HttpService.class);
         Call<ResponseBody> call = httpService.post(apiUrl, headers, paramMap);
-
         parseNetData(call, httpResponseListener);
         return call;
     }
 
-    public static Call upload(Request request, final UploadListener uploadListener) {
-        if (request.getUploadFiles() == null || !request.getUploadFiles().get(0).exists()) {
-            new FileNotFoundException("file does not exist(文件不存在)").printStackTrace();
+    public static okhttp3.Call upload(Request request, final UploadListener uploadListener) {
+        if (request.getUploadFiles() == null || request.getUploadFiles().size() == 0) {
+            /*new FileNotFoundException("file does not exist(文件不存在)").printStackTrace();*/
+            new FileNotFoundException("please add upload file").printStackTrace();
         }
-        Map<String, RequestBody> requestBodyMap = new HashMap<>();
+        //000000000000000000000000000000
+
+
+        try {
+            OkHttpClient okHttpClient = new OkHttpClient.Builder().addNetworkInterceptor(new Interceptor() {
+                @Override
+                public okhttp3.Response intercept(Chain chain) throws IOException {
+                    //拦截
+//                    Response originalResponse = chain.proceed(chain.request());
+                    okhttp3.Response proceed = chain.proceed(chain.request());
+                    //包装响应体并返回
+                    return proceed.newBuilder()
+                            .body( new ProgressResponseBody(proceed.body(), uploadListener))
+                            .build();
+                }
+            }).build();
+            MultipartBody.Builder multipartBodyBuilder = new MultipartBody.Builder().setType(MultipartBody.FORM);
+            RequestBody requestBody = null;
+            //第一个参数是服务获取文件的key,第二个参数文件的名称,第三个参数上传到服务器文件以流的形式
+            if (request.getUploadFiles() != null) {
+                for (String key : request.getUploadFiles().keySet()) {
+                    multipartBodyBuilder.addFormDataPart(key
+                            , request.getUploadFiles().get(key).getName()
+                            , RequestBody.create(request.getMediaType(), request.getUploadFiles().get(key)));
+                }
+            }
+
+            if (request.getParamsMap() != null) {
+                for (String key : request.getParamsMap().keySet()) {
+                    multipartBodyBuilder.addFormDataPart(key, request.getParamsMap().get(key).toString());
+                }
+            }
+
+            requestBody = multipartBodyBuilder.build();
+            ProgressRequestBody progressRequestBody = new ProgressRequestBody(requestBody, uploadListener);
+            okhttp3.Request.Builder methodBuilder = new okhttp3.Request.Builder().method(request.getRequestMethod().getValue(), progressRequestBody);
+            if (request.getHeaderMap() != null) {
+                for (String key : request.getHeaderMap().keySet()) {
+                    methodBuilder.addHeader(key, request.getHeaderMap().get(key).toString());
+                }
+            }
+
+            okhttp3.Request okHttpRequest = methodBuilder.url(request.getApiUlr()).build();
+            okhttp3.Call call = okHttpClient.newCall(okHttpRequest);
+            call.enqueue(new okhttp3.Callback() {
+                @Override
+                public void onFailure(okhttp3.Call call, IOException e) {
+                    uploadListener.onFailure(call, e);
+                }
+
+                @Override
+                public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
+                    uploadListener.onResponse(call, response);
+                }
+            });
+            return call;
+        } catch (Throwable e) {
+            L.e(e);
+        }
+
+        //000000000000000000000000000000
+
+        /*Map<String, RequestBody> requestBodyMap = new HashMap<>();
         RequestBody requestBody = RequestBody.create(request.getMediaType(), request.getUploadFiles().get(0));
         requestBodyMap.put("file[]\"; filename=\"" + request.getUploadFiles().get(0).getName(), requestBody);
 
@@ -171,6 +233,9 @@ public final class HttpHelper {
             L.i("baseUrl:" + baseUrl);
             L.i("apiUrl:" + httpUrl.substring(baseUrl.length()));
         }
+        Retrofit.Builder retrofitBuilder = new Retrofit.Builder();
+
+
         Retrofit retrofit = new Retrofit.Builder()
                 .addConverterFactory(new ChunkingConverterFactory(requestBody, uploadListener))
                 .addConverterFactory(GsonConverterFactory.create())
@@ -178,22 +243,22 @@ public final class HttpHelper {
                 .build();
         HttpService service = retrofit.create(HttpService.class);
         Call<ResponseBody> model = null;
-       /* if (RequestMethod.GET.equals(request.getRequestMethod())) {
+
+
+        if (RequestMethod.GET.equals(request.getRequestMethod())) {
             model = service.getUpload(
                     httpUrl.substring(baseUrl.length())
-                    , "uploadDes"
+                    , headers
+                    , params
                     , requestBodyMap);
         } else {
             model = service.postUpload(
                     httpUrl.substring(baseUrl.length())
-                    , "uploadDes"
+                    , headers
+                    , params
                     , requestBodyMap);
-        }*/
+        }
 
-        model = service.postUpload(
-                httpUrl.substring(baseUrl.length())
-                , "uploadDes"
-                , requestBodyMap);
 
         model.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -205,8 +270,8 @@ public final class HttpHelper {
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 uploadListener.onFailure(call, t);
             }
-        });
-        return model;
+        });*/
+        return null;
     }
 
 
@@ -222,9 +287,9 @@ public final class HttpHelper {
                     if (!String.class.equals(httpResponseListener.getType())) {
                         Gson gson = new Gson();
                         T t = gson.fromJson(json, httpResponseListener.getType());
-                        httpResponseListener.onResponse(t,response.headers());
+                        httpResponseListener.onResponse(t, response.headers());
                     } else {
-                        httpResponseListener.onResponse((T) json,response.headers());
+                        httpResponseListener.onResponse((T) json, response.headers());
                     }
                 } catch (Exception e) {
                     if (L.isDebug) {
@@ -310,10 +375,10 @@ public final class HttpHelper {
 
         @Multipart
         @POST
-        Call<String> postUpload(@Url String url, @Part("filedes") String des, @PartMap Map<String, RequestBody> params);
+        Call<String> postUpload(@Url String url, @HeaderMap Map<String, Object> headers, @QueryMap Map<String, Object> paramsField/*, @Part("filedes") String des*/, @PartMap Map<String, RequestBody> params);
 
         @Multipart
         @GET
-        Call<String> getUpload(@Url String url, @Part("filedes") String des, @PartMap Map<String, RequestBody> params);
+        Call<String> getUpload(@Url String url, @HeaderMap Map<String, Object> headers, @FieldMap Map<String, Object> paramsField,/*@Part("filedes") String des,*/ @PartMap Map<String, RequestBody> params);
     }
 }

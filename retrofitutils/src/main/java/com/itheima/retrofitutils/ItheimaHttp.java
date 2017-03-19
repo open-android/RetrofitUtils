@@ -59,7 +59,7 @@ public class ItheimaHttp {
         }
     }
 
-    public static <T> Call upload(Request request, UploadListener uploadListener) {
+    public static <T> okhttp3.Call upload(Request request, UploadListener uploadListener) {
         return HttpHelper.upload(request, uploadListener);
     }
 

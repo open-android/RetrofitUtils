@@ -136,9 +136,10 @@ Call call = ItheimaHttp.postAsync(apiUrl, new HttpResponseListener<Bean>() {
 
 ###文件上传
 ```java
-Request request = ItheimaHttp.newUploadRequest("http://xxx/xxx/xxx", RequestMethod.POST);
-request.putUploadFile(uploadFile)
-        .putMediaType(MediaType.parse("multipart/form-data"));
+Request request = ItheimaHttp.newUploadRequest("http://xxxxxx/xxxx", RequestMethod.POST);
+        request.putUploadFile("resource", mSdFile)
+                .putHeader("cookie", cookie)
+                .putMediaType(MediaType.parse("application/octet-stream"));
 ItheimaHttp.upload(request, new UploadListener() {
     @Override
     public void onResponse(Call call, Response response) {

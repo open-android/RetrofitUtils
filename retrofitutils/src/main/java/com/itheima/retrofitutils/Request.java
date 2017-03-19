@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 
 /**
  * Created by lyl on 2016/11/6.
@@ -15,11 +16,11 @@ import okhttp3.MediaType;
 public class Request {
     private Map<String, Object> mHeaderMap;
     private Map<String, Object> mParamsMap;
-    private List<File> mUploadFiles;
+    private Map<String, File> mUploadFiles;
     private String mApiUlr;
     private RequestMethod mRequestMethod = RequestMethod.GET;
 
-    private MediaType mMediaType = MediaType.parse("application/otcet-stream");
+    private MediaType mMediaType = MediaType.parse("application/octet-stream");
 
     public Request(String apiUlr, RequestMethod method) {
         this.mApiUlr = apiUlr;
@@ -68,15 +69,15 @@ public class Request {
         return mMediaType;
     }
 
-    public Request putUploadFile(File uploadFile) {
+    public Request putUploadFile(String key, File uploadFile) {
         if (mUploadFiles == null) {
-            mUploadFiles = new ArrayList<>(3);
+            mUploadFiles = new HashMap<>();
         }
-        mUploadFiles.add(uploadFile);
+        mUploadFiles.put(key, uploadFile);
         return this;
     }
 
-    public List<File> getUploadFiles() {
+    public Map<String, File> getUploadFiles() {
         return mUploadFiles;
     }
 
