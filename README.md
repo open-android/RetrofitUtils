@@ -1,15 +1,15 @@
-#RetrofitUtils
+# RetrofitUtils
 
 Retrofit封装框架，内部使用gson解析json数据
 
 
- PS：如果觉得文章太长，你也可观看该课程的[视频](https://www.boxuegu.com/web/html/video.html?courseId=172&sectionId=8a2c9bed5a3a4c7e015a3ad9a490030d&chapterId=8a2c9bed5a3a4c7e015a3ad9dfdf030e&vId=8a2c9bed5a3a4c7e015a3adaaaa9030f&videoId=4DC518DB11BC473E9C33DC5901307461)，亲，里面还有高清，无码的福利喔
+PS：如果觉得文章太长，你也可观看该课程的[视频教程](https://v.qq.com/x/page/w0355urm511.html)，亲，里面还有高清，无码的福利喔
 
+* 欢迎关注微信公众号,长期推荐技术文章和技术视频
 
-* 爱生活,爱学习,更爱做代码的搬运工,分类查找更方便请下载黑马助手app
+* 微信公众号名称：Android干货程序员
 
-
-![黑马助手.png](http://upload-images.jianshu.io/upload_images/4037105-f777f1214328dcc4.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![](http://upload-images.jianshu.io/upload_images/4037105-8f737b5104dd0b5d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 开始
 ===
@@ -30,7 +30,7 @@ allprojects {
 ```
 
 
-###需要的权限
+### 需要的权限
 ```xml
 <uses-permission android:name="android.permission.INTERNET" />
 <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -38,18 +38,18 @@ allprojects {
 <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 ```
 
-###初始化
+### 初始化
 retrofitUtils初始化需要二个参数Context、baseUrl，最好在Application的onCreate()中初始化，记得在manifest.xml中注册Application。
 ```java
 ItheimaHttp.init(this, baseUrl);//baseUrl格式："http://xxxxxx/xxxxx/"
 ```
 
-###设置是否缓存http响应数据（默认支持缓存）
+### 设置是否缓存http响应数据（默认支持缓存）
 ```java
 ItheimaHttp.setHttpCache(false);//false不缓存，true缓存
 ```
 
-###get/Post Bean类型异步请求（内部使用Gson解析json数据）
+### get/Post Bean类型异步请求（内部使用Gson解析json数据）
 ```java
 //ItheimaHttp.newPostRequest(apiUrl)
 Request request = ItheimaHttp.newGetRequest(apiUrl);//apiUrl格式："xxx/xxxxx"
@@ -98,7 +98,7 @@ Call call = ItheimaHttp.send(request, new HttpResponseListener<String>() {
 //@return Call可以取消网络请求
 ```
 
-###添加请求参数
+### 添加请求参数
 ```java
 request.putParams(key,value)
 .putParams(key,value)
